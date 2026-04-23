@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus | Student Hub</title>
+    <style>
+        /* Modern CSS Reset & Variables */
+        :root {
+            --glass: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text: #ffffff;
+            --accent: #00d2ff;
+            --secondary: #92fe9d;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Animated Background */
+            background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #141e30);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Entrance Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header {
+            text-align: center;
+            padding: 50px 20px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin: 0;
+            background: linear-gradient(to right, var(--accent), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            padding-bottom: 50px;
+        }
+
+        /* Glassmorphism Card Style */
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeInUp 1s ease-out both;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 40px 0 rgba(0, 210, 255, 0.2);
+        }
+
+        .card:nth-child(1) { animation-delay: 0.2s; }
+        .card:nth-child(2) { animation-delay: 0.4s; }
+        .card:nth-child(3) { animation-delay: 0.6s; }
+
+        h2 { margin-top: 0; font-weight: 300; letter-spacing: 1px; }
+
+        /* UI Elements */
+        #timer-display {
+            font-size: 4rem;
+            text-align: center;
+            margin: 20px 0;
+            font-variant-numeric: tabular-nums;
+            font-weight: 700;
+        }
+
+        .btn-group { display: flex; gap: 10px; }
+
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid var(--glass-border);
+        }
+
+        button:hover {
+            background: var(--accent);
+            color: #000;
+            transform: scale(1.05);
+        }
+
+        input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+            padding: 12px;
+            border-radius: 10px;
+            color: white;
+            margin-bottom: 10px;
+            outline: none;
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: white;
+            padding: 15px;
+            resize: none;
+            outline: none;
+        }
+
+        #aps-result {
+            font-size: 1.5rem;
+            text-align: center;
+            color: var(--secondary);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>NEXUS</h1>
+    <p>Minimalist Academic Toolkit</p>
+</header>
+
+<div class="container">
+    
+    <div class="card">
+        <h2>Focus</h2>
+        <div id="timer-display">25:00</div>
+        <div class="btn-group">
+            <button onclick="toggleTimer()" id="timer-btn">Start</button>
+            <button onclick="resetTimer()">Reset</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>APS Tracker</h2>
+        <div id="calculator">
+            <input type="number" class="score" placeholder="Subject 1 %" oninput="calculateAPS()">
+            <input type="number" class="score" placeholder="Subject 2 %" oninput="calculateAPS()">
+            <input type="number" class="score" placeholder="Subject 3 %" oninput="calculateAPS()">
+            <input type="number" class="score" placeholder="Subject 4 %" oninput="calculateAPS()">
+            <input type="number" class="score" placeholder="Subject 5 %" oninput="calculateAPS()">
+            <input type="number" class="score" placeholder="Subject 6 %" oninput="calculateAPS()">
+            <div id="aps-result">Total APS: 0</div>
+        </div>
+    </div>
+
+    <div class="card" style="grid-column: span 1;">
+        <h2>Thoughts</h2>
+        <textarea id="scratchpad" placeholder="Quick notes for class..." oninput="saveNotes()"></textarea>
+    </div>
+
+</div>
+
+<script>
+    // TIMER ENGINE
+    let timeLeft = 25 * 60;
+    let timerId = null;
+
+    function updateDisplay() {
+        const m = Math.floor(timeLeft / 60);
+        const s = timeLeft % 60;
+        document.getElementById('timer-display').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    function toggleTimer() {
+        const btn = document.getElementById('timer-btn');
+        if (timerId) {
+            clearInterval(timerId);
+            timerId = null;
+            btn.innerText = "Resume";
+        } else {
+            timerId = setInterval(() => {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    updateDisplay();
+                } else {
+                    clearInterval(timerId);
+                    alert("Time for a break!");
+                }
+            }, 1000);
+            btn.innerText = "Pause";
+        }
+    }
+
+    function resetTimer() {
+        clearInterval(timerId);
+        timerId = null;
+        timeLeft = 25 * 60;
+        updateDisplay();
+        document.getElementById('timer-btn').innerText = "Start";
+    }
+
+    // APS ENGINE
+    function calculateAPS() {
+        const scores = document.querySelectorAll('.score');
+        let total = 0;
+        scores.forEach(input => {
+            let val = parseInt(input.value) || 0;
+            if (val >= 80) total += 7;
+            else if (val >= 70) total += 6;
+            else if (val >= 60) total += 5;
+            else if (val >= 50) total += 4;
+            else if (val >= 40) total += 3;
+            else if (val >= 30) total += 2;
+            else if (val > 0) total += 1;
+        });
+        document.getElementById('aps-result').innerText = `Total APS: ${total}`;
+    }
+
+    // STORAGE ENGINE
+    function saveNotes() {
+        localStorage.setItem('nexus_notes', document.getElementById('scratchpad').value);
+    }
+
+    window.onload = () => {
+        document.getElementById('scratchpad').value = localStorage.getItem('nexus_notes') || "";
+    };
+</script>
+
+</body>
+</html>
