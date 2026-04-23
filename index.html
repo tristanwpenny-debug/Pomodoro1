@@ -3,34 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus | Student Hub</title>
+    <title>Nexus | Ultimate Hub</title>
     <style>
-        /* Modern CSS Reset & Variables */
         :root {
-            --glass: rgba(255, 255, 255, 0.15);
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-heavy: rgba(255, 255, 255, 0.2);
             --glass-border: rgba(255, 255, 255, 0.2);
             --text: #ffffff;
             --accent: #00d2ff;
             --secondary: #92fe9d;
+            --danger: #ff4b2b;
         }
 
-        * {
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-        }
+        * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
 
         body {
             margin: 0;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            /* Animated Background */
             background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #141e30);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
             color: var(--text);
-            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         @keyframes gradientBG {
@@ -39,126 +35,103 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Entrance Animations */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes slideIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
         }
 
-        header {
-            text-align: center;
-            padding: 50px 20px;
-            animation: fadeInUp 0.8s ease-out;
-        }
-
-        header h1 {
-            font-size: 3rem;
-            margin: 0;
-            background: linear-gradient(to right, var(--accent), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -1px;
-        }
+        header { text-align: center; padding: 40px 20px; animation: slideIn 0.5s ease-out; }
+        header h1 { font-size: 3.5rem; margin: 0; background: linear-gradient(to right, var(--accent), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
         .container {
-            width: 90%;
-            max-width: 900px;
+            width: 95%;
+            max-width: 1200px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            padding-bottom: 50px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            padding: 20px;
         }
 
-        /* Glassmorphism Card Style */
         .card {
             background: var(--glass);
             backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
             border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            animation: fadeInUp 1s ease-out both;
+            border-radius: 24px;
+            padding: 25px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: slideIn 0.8s ease-out both;
         }
 
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 12px 40px 0 rgba(0, 210, 255, 0.2);
+        .card:hover { transform: translateY(-5px); background: var(--glass-heavy); }
+
+        h2 { font-weight: 400; font-size: 1.2rem; margin-top: 0; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; }
+
+        /* Timer */
+        #timer-display { font-size: 3.5rem; text-align: center; margin: 15px 0; font-weight: 700; }
+
+        /* Task List */
+        .todo-input-group { display: flex; gap: 10px; margin-bottom: 15px; }
+        .todo-list { list-style: none; padding: 0; max-height: 200px; overflow-y: auto; }
+        .todo-item { 
+            background: rgba(0,0,0,0.2); 
+            padding: 10px; 
+            border-radius: 10px; 
+            margin-bottom: 8px; 
+            display: flex; 
+            justify-content: space-between;
+            animation: slideIn 0.3s ease;
         }
+        .todo-item.done { text-decoration: line-through; opacity: 0.5; }
 
-        .card:nth-child(1) { animation-delay: 0.2s; }
-        .card:nth-child(2) { animation-delay: 0.4s; }
-        .card:nth-child(3) { animation-delay: 0.6s; }
-
-        h2 { margin-top: 0; font-weight: 300; letter-spacing: 1px; }
-
-        /* UI Elements */
-        #timer-display {
-            font-size: 4rem;
-            text-align: center;
-            margin: 20px 0;
-            font-variant-numeric: tabular-nums;
-            font-weight: 700;
-        }
-
-        .btn-group { display: flex; gap: 10px; }
-
-        button {
-            flex: 1;
-            padding: 12px;
-            border: none;
+        /* APS Styles */
+        .aps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        
+        /* Buttons & Inputs */
+        input, textarea, button {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
             border-radius: 12px;
-            background: rgba(255, 255, 255, 0.1);
             color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid var(--glass-border);
-        }
-
-        button:hover {
-            background: var(--accent);
-            color: #000;
-            transform: scale(1.05);
-        }
-
-        input {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid var(--glass-border);
             padding: 12px;
-            border-radius: 10px;
-            color: white;
-            margin-bottom: 10px;
             outline: none;
-        }
-
-        textarea {
             width: 100%;
-            height: 150px;
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid var(--glass-border);
-            border-radius: 10px;
-            color: white;
-            padding: 15px;
-            resize: none;
-            outline: none;
         }
 
-        #aps-result {
-            font-size: 1.5rem;
+        button { cursor: pointer; transition: 0.3s; font-weight: bold; width: auto; }
+        button:hover { background: var(--accent); color: #000; }
+        .btn-add { background: var(--secondary); color: #000; width: 50px; }
+        .btn-clear { background: var(--danger); font-size: 0.8rem; }
+
+        /* About Section */
+        .about-section {
+            margin: 40px 0;
             text-align: center;
+            animation: slideIn 1.2s ease-out both;
+        }
+
+        .about-badge {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .about-badge span {
             color: var(--secondary);
             font-weight: bold;
+            text-shadow: 0 0 10px rgba(146, 254, 157, 0.5);
         }
+
     </style>
 </head>
 <body>
 
 <header>
     <h1>NEXUS</h1>
-    <p>Minimalist Academic Toolkit</p>
+    <p>Your Digital Command Center</p>
 </header>
 
 <div class="container">
@@ -166,34 +139,64 @@
     <div class="card">
         <h2>Focus</h2>
         <div id="timer-display">25:00</div>
-        <div class="btn-group">
-            <button onclick="toggleTimer()" id="timer-btn">Start</button>
-            <button onclick="resetTimer()">Reset</button>
+        <div style="display: flex; gap: 10px;">
+            <button style="flex: 2" onclick="toggleTimer()" id="timer-btn">Start Session</button>
+            <button style="flex: 1" onclick="resetTimer()">Reset</button>
         </div>
     </div>
 
     <div class="card">
+        <h2>Daily Goals</h2>
+        <div class="todo-input-group">
+            <input type="text" id="todo-input" placeholder="Add a task...">
+            <button class="btn-add" onclick="addTodo()">+</button>
+        </div>
+        <ul id="todo-list" class="todo-list"></ul>
+    </div>
+
+    <div class="card">
         <h2>APS Tracker</h2>
-        <div id="calculator">
-            <input type="number" class="score" placeholder="Subject 1 %" oninput="calculateAPS()">
-            <input type="number" class="score" placeholder="Subject 2 %" oninput="calculateAPS()">
-            <input type="number" class="score" placeholder="Subject 3 %" oninput="calculateAPS()">
-            <input type="number" class="score" placeholder="Subject 4 %" oninput="calculateAPS()">
-            <input type="number" class="score" placeholder="Subject 5 %" oninput="calculateAPS()">
-            <input type="number" class="score" placeholder="Subject 6 %" oninput="calculateAPS()">
-            <div id="aps-result">Total APS: 0</div>
+        <div class="aps-grid">
+            <input type="number" class="score" placeholder="S1 %" oninput="calculateAPS()">
+            <input type="number" class="score" placeholder="S2 %" oninput="calculateAPS()">
+            <input type="number" class="score" placeholder="S3 %" oninput="calculateAPS()">
+            <input type="number" class="score" placeholder="S4 %" oninput="calculateAPS()">
+            <input type="number" class="score" placeholder="S5 %" oninput="calculateAPS()">
+            <input type="number" class="score" placeholder="S6 %" oninput="calculateAPS()">
+        </div>
+        <h3 id="aps-result" style="text-align: center; color: var(--secondary);">Total APS: 0</h3>
+    </div>
+
+    <div class="card">
+        <h2>Inspiration</h2>
+        <div id="quote-box">"The best way to predict the future is to create it."</div>
+        <button style="width: 100%" onclick="newQuote()">New Quote</button>
+    </div>
+
+    <div class="card">
+        <h2>Quick Thoughts</h2>
+        <textarea id="scratchpad" placeholder="Drafting something important..." oninput="saveNotes()"></textarea>
+    </div>
+
+    <div class="card">
+        <h2>Resources</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <button onclick="window.open('https://www.google.com')">Google</button>
+            <button onclick="window.open('https://github.com')">GitHub</button>
+            <button onclick="window.open('https://canva.com')">Canva</button>
+            <button class="btn-clear" onclick="clearData()">Wipe Cache</button>
         </div>
     </div>
+</div>
 
-    <div class="card" style="grid-column: span 1;">
-        <h2>Thoughts</h2>
-        <textarea id="scratchpad" placeholder="Quick notes for class..." oninput="saveNotes()"></textarea>
+<div class="about-section">
+    <div class="about-badge">
+        Created by <span>Wayne</span>
     </div>
-
 </div>
 
 <script>
-    // TIMER ENGINE
+    // Timer, Todo, APS, Quote, and Storage logic remain the same
     let timeLeft = 25 * 60;
     let timerId = null;
 
@@ -211,13 +214,8 @@
             btn.innerText = "Resume";
         } else {
             timerId = setInterval(() => {
-                if (timeLeft > 0) {
-                    timeLeft--;
-                    updateDisplay();
-                } else {
-                    clearInterval(timerId);
-                    alert("Time for a break!");
-                }
+                if (timeLeft > 0) { timeLeft--; updateDisplay(); }
+                else { clearInterval(timerId); alert("Session Complete!"); }
             }, 1000);
             btn.innerText = "Pause";
         }
@@ -228,10 +226,32 @@
         timerId = null;
         timeLeft = 25 * 60;
         updateDisplay();
-        document.getElementById('timer-btn').innerText = "Start";
+        document.getElementById('timer-btn').innerText = "Start Session";
     }
 
-    // APS ENGINE
+    function addTodo() {
+        const input = document.getElementById('todo-input');
+        if (!input.value) return;
+        const li = document.createElement('li');
+        li.className = 'todo-item';
+        li.innerHTML = `<span>${input.value}</span><span onclick="this.parentElement.remove()" style="cursor:pointer; color:var(--danger)">×</span>`;
+        li.onclick = function() { this.classList.toggle('done'); };
+        document.getElementById('todo-list').appendChild(li);
+        input.value = "";
+    }
+
+    const quotes = [
+        "Believe you can and you're halfway there.",
+        "Your only limit is your mind.",
+        "Success is the sum of small efforts, repeated daily.",
+        "Don't stop until you're proud.",
+        "Focus on being productive, not busy."
+    ];
+    function newQuote() {
+        const q = quotes[Math.floor(Math.random() * quotes.length)];
+        document.getElementById('quote-box').innerText = `"${q}"`;
+    }
+
     function calculateAPS() {
         const scores = document.querySelectorAll('.score');
         let total = 0;
@@ -248,14 +268,9 @@
         document.getElementById('aps-result').innerText = `Total APS: ${total}`;
     }
 
-    // STORAGE ENGINE
-    function saveNotes() {
-        localStorage.setItem('nexus_notes', document.getElementById('scratchpad').value);
-    }
-
-    window.onload = () => {
-        document.getElementById('scratchpad').value = localStorage.getItem('nexus_notes') || "";
-    };
+    function saveNotes() { localStorage.setItem('nexus_notes', document.getElementById('scratchpad').value); }
+    function clearData() { localStorage.clear(); location.reload(); }
+    window.onload = () => { document.getElementById('scratchpad').value = localStorage.getItem('nexus_notes') || ""; };
 </script>
 
 </body>
